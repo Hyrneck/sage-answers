@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <meta charset="utf-8" />
+  <title>Minimal Vercel Chat</title>
+  <style>
+    body{font:16px/1.4 system-ui,sans-serif;margin:2rem}
+    #out{white-space:pre-wrap;border:1px solid #ccc;padding:1rem;min-height:8rem}
+    input,button{font:inherit}
+  </style>
+
+  <h1>Minimal Chat</h1>
+  <input id="msg" placeholder="Ask me anything…" />
+  <button id="send">Send</button>
+  <div id="out"></div>
+
+  <script type="module">
+    const API = "/api/chat";
+    const $msg = document.getElementById("msg");
+    const $send = document.getElementById("send");
+    const $out = document.getElementById("out");
+
+    async function send() {
+      const message = $msg.value.trim();
+      if (!message) return;
+      $msg.value = "";
+      $out.textContent += `\n\nYou: ${message}\nAI: `;
+
+      const r = await fetch(API, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ message })
+      });
+
+      if (!r.ok) {
+        $out.textContent += `[${r.status}] ${await r.text()}`;
+        return;
+      }
+      $out.textContent += await r.text();
+      $out.scrollTop = $out.scrollHeight;
+    }
+
+    $send.onclick = send;
+    $msg.addEventListener("keydown", e => { if (e.key === "Enter") send(); });
+  </script>
+</html>
+
