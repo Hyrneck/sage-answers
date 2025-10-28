@@ -13,7 +13,7 @@ export default async function handler(req: Request) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "gpt-4o-mini",
+      model: "gpt-5",
       messages: [
         { role: "system", content: SYSTEM_1206 },
         { role: "user", content: message || "" },
