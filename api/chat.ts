@@ -18,7 +18,6 @@ export default async function handler(req: Request) {
         { role: "system", content: SYSTEM_1206 },
         { role: "user", content: message || "" },
       ],
-      temperature: 0.2,
     }),
   });
 
